@@ -30,7 +30,10 @@ plugins/qtim/
 ## Установка
 
 ```bash
-# 1. зарегистрировать маркетплейс (локальный путь или git-URL)
+# 1. зарегистрировать маркетплейс
+#    вариант A — из GitHub (рекомендую):
+/plugin marketplace add toiiia/qtim-agent-team
+#    вариант B — из локального пути:
 /plugin marketplace add ~/Desktop/Projects/qtim-agent-team
 
 # 2. установить плагин

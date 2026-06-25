@@ -5,7 +5,8 @@
   "author": {
     "name": "Антон Фокин"
   },
-  "homepage": "https://github.com/",
+  "homepage": "https://github.com/toiiia/qtim-agent-team",
+  "repository": "https://github.com/toiiia/qtim-agent-team",
   "keywords": [
     "agent-team",
     "orchestration",
