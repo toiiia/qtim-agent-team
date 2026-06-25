@@ -27,6 +27,18 @@ plugins/qtim/
     └── hooks.json      # универсальные hooks-гейты качества
 ```
 
+## Требования
+
+- **Claude Code с включённым Agent Teams.** Движок опирается на мультиагентный рантайм (`Agent({name})` / `SendMessage` / `Task*`) — он за экспериментальным флагом. Включи в `settings.json` (user-level `~/.claude/settings.json` или project-level `.claude/settings.json`):
+  ```json
+  {
+    "env": { "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1" }
+  }
+  ```
+  Без него `/qtim:team-up` и `/qtim:team-lazy` не смогут спавнить членов команды. Генератор `/qtim:setup` прописывает этот флаг в проектный `.claude/settings.local.json` автоматически — но для самих `team-*` команд он должен быть активен в сессии.
+- **(опционально) `npx` / Node** — для онлайн-подбора skills через `find-skills` (реестр skills.sh). Без сети генератор использует только уже установленные skills.
+- **(опционально) плагин `codex@openai-codex`** — если включаешь Codex-полосу (second-opinion / execution lane).
+
 ## Установка
 
 ```bash
