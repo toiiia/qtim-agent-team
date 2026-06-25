@@ -1,0 +1,19 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "qtim-agent-team",
+  "description": "Личный маркетплейс: плагин-движок для bootstrap и оркестрации команды специализированных субагентов под любой проект.",
+  "owner": {
+    "name": "Антон Фокин"
+  },
+  "plugins": [
+    {
+      "name": "qtim",
+      "description": "Bootstrap и оркестрация команды субагентов: генератор setup + движок team-up/team-lazy/team-down (рантайм Agent Teams), intake-протокол, каталог паттернов оркестрации, Codex second-opinion, hooks-гейты.",
+      "source": "./plugins/qtim",
+      "category": "development",
+      "author": {
+        "name": "Антон Фокин"
+      }
+    }
+  ]
+}

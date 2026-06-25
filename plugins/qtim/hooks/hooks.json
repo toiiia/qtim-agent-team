@@ -1,0 +1,27 @@
+{
+  "description": "Универсальные hooks-гейты команды агентов: анонс команды при старте сессии (если в проекте есть charter) и напоминание team-lead'у проверить артефакты завершившегося субагента.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "test -f .claude/team-charter.md && echo '[qtim] Команда агентов настроена (charter найден). /qtim:team-up — полная, /qtim:team-lazy — по требованию, /qtim:team-down — свернуть.' || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Субагент завершился. Team-lead: проверь реальные артефакты (изменённые файлы, отчёт, обновления memory/), не полагайся только на устный ack. Нет артефактов — переспроси через SendMessage или проверь сам.'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
