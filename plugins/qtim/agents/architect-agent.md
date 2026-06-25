@@ -55,7 +55,7 @@ tools: [Read, Write, WebSearch, Task, Bash]
    обновление схемы в `memory/`), `front` (страницы/композаблы/типы), `tester` (сценарии +
    viewport'ы), `devops` (ENV/инфра, если есть).
 6. Stress-test: `grill-me` (self-play) и — для нетривиального ADR — **codex second-opinion**
-   per `reference/codex-consult.md` (advisory, read-only, fail-soft). `Bash` у тебя только
+   по протоколу codex-consult плагина qtim (advisory, read-only, fail-soft). `Bash` у тебя только
    для codex-consult и git read-only.
 
 ## Режим REVIEW — смеллы, которые ищем

@@ -117,7 +117,7 @@ Liveness определяется **фактом спавна в текущей 
 
 Отправь **одним сообщением** N вызовов `Agent` (concurrency), каждый с `run_in_background: true`. Каждый получает `name`, `subagent_type` и компактный system prompt. **Состав, типы и `read on spawn` бери из charter проекта** — не хардкодь здесь.
 
-Канонический состав (генератор `setup` кладёт его в charter; имена ролей зафиксированы — задачи привязаны к `owner`):
+Канонический (дефолтный) состав — **фактический бери из charter проекта**, он может быть короче (Compact-проект). Имена ролей зафиксированы, задачи привязаны к `owner`:
 
 **Core (per-эпик flow):** `architect` · `db` · `front` · `tester` · `reviewer` · `explorer`
 **Cross-cutting (async):** `devops` · `product` · `auditor`

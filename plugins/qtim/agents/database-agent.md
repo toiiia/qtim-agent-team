@@ -89,9 +89,9 @@ tools: [Bash, Read, Write, Edit, MultiEdit]
 - [ ] Если изменились типы строк — сообщи `front` (единый источник типов проекта)
 
 > **Codex second-opinion (обязателен для security-critical):** новая политика доступа / триггер /
-> helper-функция → review через codex per `reference/codex-consult.md` (advisory: инвариант >
+> helper-функция → review через codex по протоколу codex-consult плагина qtim (advisory: инвариант >
 > совет codex; read-only; fail-soft). Для money-critical — dual-adversary
-> (см. orchestration-patterns, § adversarial claude+codex).
+> (паттерн adversarial claude+codex).
 
 ---
 

@@ -1,12 +1,14 @@
 {
   "name": "qtim",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Bootstrap и оркестрация постоянной команды специализированных субагентов под любой проект. Включает генератор setup с автоподбором skills и плагинов/MCP под стек, движок team-up/team-lazy/team-down на актуальном рантайме Agent Teams (Agent/SendMessage/Task*), intake-протокол, каталог паттернов оркестрации, протокол Codex second-opinion и hooks-гейты качества.",
   "author": {
     "name": "Антон Фокин"
   },
   "homepage": "https://github.com/toiiia/qtim-agent-team",
   "repository": "https://github.com/toiiia/qtim-agent-team",
+  "license": "MIT",
+  "category": "development",
   "keywords": [
     "agent-team",
     "orchestration",

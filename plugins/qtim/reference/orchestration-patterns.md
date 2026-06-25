@@ -116,7 +116,7 @@ while (!trace && i++ < 50 && budget.remaining() > 40_000) {
   const r = await agent(
     `Прогон #${i}: headed-браузер, воспроизвести <сценарий>, лови flaky-fail / race.
      При fail сохрани trace + console+network в memory/screenshots/.`,
-    { agentType: 'frontend-testing-agent', schema: RUN_SCHEMA })
+    { agentType: 'testing-agent', schema: RUN_SCHEMA })
   if (r.failed) trace = r.tracePath
   log(`#${i}: ${r.failed ? 'ПОЙМАН → ' + trace : 'зелёный'}`)
 }

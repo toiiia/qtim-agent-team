@@ -27,6 +27,10 @@ plugins/qtim/
     └── hooks.json      # универсальные hooks-гейты качества
 ```
 
+> **5 шаблонов на 9 ролей — намеренно.** Команда канонически из 9 ролей (`architect` · `db` · `front` · `tester` · `reviewer` · `explorer` + `devops` · `product` · `auditor`), но `explorer` использует встроенный `subagent_type: Explore`, а `devops`/`product`/`auditor` — `general-purpose`. Поэтому отдельные шаблоны нужны только пяти impl/спец-ролям.
+>
+> **Плейсхолдеры в шаблонах** (`{{FRONTEND_FRAMEWORK}}`, `{{BACKEND}}`, `{{DATABASE}}`, `{{FILE_STORAGE}}`, `{{BUILD_CMD}}`, `{{TYPECHECK_CMD}}`, `{{TEST_RUNNER}}`, `{{E2E_TOOL}}`) подставляет генератор `setup` под стек; при ручной правке замени их на реальные фреймворки/команды проекта.
+
 ## Требования
 
 - **Claude Code с включённым Agent Teams.** Движок опирается на мультиагентный рантайм (`Agent({name})` / `SendMessage` / `Task*`) — он за экспериментальным флагом. Включи в `settings.json` (user-level `~/.claude/settings.json` или project-level `.claude/settings.json`):

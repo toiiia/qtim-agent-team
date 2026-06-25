@@ -74,11 +74,11 @@ production-checklist, прошлое ревью (review-report), баг-лог, 
 
 ## Шаг 3: codex second-opinion (перед вердиктом APPROVED)
 
-Per `reference/codex-consult.md`: запусти codex-review по незакоммиченным/диффу ветки.
+По протоколу codex-consult плагина qtim: запусти codex-review по незакоммиченным/диффу ветки.
 Каждый finding верифицируй сам (codex может галлюцинировать file:line). Advisory: конфликт
 с инвариантом → инвариант побеждает. Codex недоступен → НЕ блокируй, запиши
 `codex-consult skipped: <reason>`. Для money-critical эпиков — **не финализируй APPROVED
-до схождения с codex** (dual-adversary, см. orchestration-patterns).
+до схождения с codex** (dual-adversary — паттерн оркестрации).
 
 ## Шаг 4: отчёт
 
