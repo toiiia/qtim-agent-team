@@ -59,3 +59,18 @@
   в `/qtim:setup`.
 - **Standalone** — докопировать `commands/feature.md` и `reference/feature-pipeline.md`
   в `.claude/`.
+
+## → 1.6.0
+
+- **Роль `product`, шаблон** — обнови сгенерированный `product-agent.md` по текущему template:
+  продуктовая память (`memory/product-map.md` / `product-actors.md` / `product-glossary.md` /
+  `product-metrics.md`) в read-on-spawn («если созданы»), секция «Продуктовая память» (термины
+  из глоссария, метрики PRD — к реальным событиям из product-metrics, предложения обновлений
+  памяти в финальном выходе). Ручные правки не затирай молча — покажи diff.
+- **Charter, PM-дорожка** — в `read on spawn` роли `product` допиши файлы продуктовой памяти
+  с пометкой «если созданы». Dev-only команды менять не нужно — движок backward-tolerant:
+  без этих файлов роль работает как раньше.
+- **Рекомендация** — на существующей кодовой базе предложи пользователю прогнать
+  `/qtim:product-onboard` (наполняет продуктовую память; сами файлы memory команда создаёт
+  сама, миграция их не пишет).
+- **Standalone** — докопировать `commands/product-onboard.md` в `.claude/commands/`.
