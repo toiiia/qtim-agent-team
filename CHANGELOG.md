@@ -2,6 +2,18 @@
 
 Версии соответствуют `version` в `plugins/qtim/.claude-plugin/plugin.json` (semver). Пометка «team-sync» у версии говорит, нужно ли в собранных проектах запускать `/qtim:team-sync` (реестр миграций — `plugins/qtim/reference/migrations.md`).
 
+## 1.4.0 — 2026-07-02
+
+> team-sync: опционально — dev-only команды работают без изменений (движок backward-tolerant); запускай, если хочешь добавить PM-дорожку в собранный проект или заменить старый каркас роли `product` на полноценный шаблон. Перечень — `reference/migrations.md`, запись «→ 1.4.0».
+
+### Добавлено
+
+- **Ролевой вход**: `/qtim:setup` первым вопросом (Q0) спрашивает роль пользователя — Developer / PM-Analyst / Оба — и генерирует команду под неё; PM-состав фиксируется стеком (`product` + `architect` + профильные impl/`tester`, без `reviewer`) — dev-роли нужны конвейеру как read-only консультанты. При существующем charter с другой дорожкой setup дописывает недостающее, не пересоздавая.
+- **`/qtim:feature`** — PM-конвейер: intake → PRD → декомпозиция → оценка → план → handoff в `/qtim:team-up`/`/qtim:team-lazy`; checkpoint у пользователя после каждой стадии; resume по статусам артефактов при существующем slug.
+- **Шаблон `agents/product-agent.md`** — роль `product` выросла из Extended-каркаса в полноценный шаблон: режимы INTAKE / PRD / DECOMPOSE / ESTIMATE / PLAN + прежний UX-аудит (режим UX-AUDIT); production code не пишет; `memory: "project"` (200 строк).
+- **`reference/feature-pipeline.md`** — механика конвейера: артефакты `docs/features/<slug>/` (intake/prd/decomposition/estimate/plan) со статусной машиной Draft → Approved → In Development → Done, правило dev-consult на декомпозиции/оценке, grounded-оценки S/M/L/XL + confidence только с evidence (без выдуманных часов), handoff-контракт. Setup переносит суть в charter-секцию «PM-конвейер» + абсолютный путь к протоколу (паттерн codex-consult).
+- **Интеграция с dev-флоу**: team-up/team-lazy читают `docs/features/<slug>/plan.md` и `prd.md` как источник scope и acceptance criteria и обновляют Status артефактов; SessionStart-анонс упоминает `/qtim:feature`.
+
 ## 1.3.0 — 2026-07-02
 
 > team-sync: рекомендуется — добавит в charter версионный штамп; без него функциональных поломок нет, но SessionStart-hook будет предлагать sync при каждом старте.

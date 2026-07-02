@@ -34,3 +34,20 @@
   По нему SessionStart-hook детектит дрейф версий, а `/qtim:team-sync` определяет диапазон
   миграций. Функциональных поломок без штампа нет — но без него hook будет предлагать sync
   при каждом старте сессии.
+
+## → 1.4.0
+
+- **Роль `product`** — если сгенерирована по старому каркасу (Extended-состав до 1.4.0),
+  предложи заменить на шаблон `product-agent.md` (PM-конвейер INTAKE/PRD/DECOMPOSE/ESTIMATE/PLAN +
+  прежний UX-аудит как режим UX-AUDIT; frontmatter `memory: "project"` — создай
+  `.claude/agent-memory/product-agent/MEMORY.md`, если отсутствует). Ручные правки старого
+  каркаса не затирай молча — покажи diff.
+- **Charter, секция «PM-конвейер»** — опциональна: добавляй только если пользователь хочет
+  PM-дорожку (`/qtim:feature`); спроси. Содержимое — суть `reference/feature-pipeline.md`
+  (стадии с checkpoint, схема `docs/features/<slug>/` со статусами, правило dev-consult и
+  grounded-оценок, handoff-контракт) + абсолютный путь к файлу протокола (как у codex-consult;
+  standalone — локальная копия `.claude/reference/feature-pipeline.md`). Dev-only команды без
+  PM-дорожки менять не нужно — движок backward-tolerant: `/qtim:feature` без секции отправляет
+  в `/qtim:setup`.
+- **Standalone** — докопировать `commands/feature.md` и `reference/feature-pipeline.md`
+  в `.claude/`.

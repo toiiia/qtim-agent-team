@@ -11,9 +11,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Структура
 
 - `.claude-plugin/marketplace.json` — манифест маркетплейса, регистрирует плагин из `./plugins/qtim`.
-- `plugins/qtim/commands/` — slash-команды `/qtim:*`: `setup` (генератор команды под проект), `team-up` / `team-lazy` / `team-down` (движок), `team-sync` (миграция собранной команды на новую версию плагина).
-- `plugins/qtim/agents/` — generic-шаблоны ролей (`architect`, `database`, `frontend`, `testing`, `reviewer`) с плейсхолдерами `{{...}}`.
-- `plugins/qtim/reference/` — переносимая механика: `intake-protocol.md`, `orchestration-patterns.md`, `codex-consult.md`, `migrations.md` (реестр миграций для team-sync). Это supporting-docs, НЕ slash-команды.
+- `plugins/qtim/commands/` — slash-команды `/qtim:*`: `setup` (генератор команды под проект, первый вопрос — роль пользователя), `feature` (PM-конвейер «хотелка → план»), `team-up` / `team-lazy` / `team-down` (движок), `team-sync` (миграция собранной команды на новую версию плагина).
+- `plugins/qtim/agents/` — generic-шаблоны ролей (`architect`, `database`, `frontend`, `testing`, `reviewer`, `product`) с плейсхолдерами `{{...}}`.
+- `plugins/qtim/reference/` — переносимая механика: `intake-protocol.md`, `orchestration-patterns.md`, `codex-consult.md`, `feature-pipeline.md` (механика PM-конвейера), `migrations.md` (реестр миграций для team-sync). Это supporting-docs, НЕ slash-команды.
 - `plugins/qtim/hooks/` — hooks плагина: `hooks.json` + `session-start.sh` (SessionStart-анонс при наличии charter + детектор дрейфа версий charter↔плагин; SubagentStop-напоминание про артефакты — advisory).
 
 ## Архитектура: движок vs генерируемое
