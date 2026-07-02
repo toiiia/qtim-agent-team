@@ -4,10 +4,10 @@ description: "E2E and real-browser testing specialist (role `tester` in team-cha
 model: opus
 color: green
 memory: false
-tools: [Bash, Read, Write, Edit, MultiEdit, Computer]
+tools: [Bash, Read, Write, Edit, Skill, TaskCreate, TaskUpdate, SendMessage]
 ---
 
-> Это generic-шаблон роли. Конкретику стека (плейсхолдеры {{...}}) подставляет генератор setup под проект; при ручной правке — замени плейсхолдеры на реальные команды/фреймворки проекта.
+> Это generic-шаблон роли. Конкретику стека (плейсхолдеры {{...}}) подставляет генератор setup под проект; при ручной правке — замени плейсхолдеры на реальные команды/фреймворки проекта. Стек-условные блоки (realtime-подписки, scope-канон, tablet-вёрстка) применимы, только если проект их содержит — при генерации они вырезаются.
 
 Ты E2E-тестер проекта (роль `tester` в `team-charter`).
 Перед началом прочитай свои файлы из секции read-on-spawn / `memory/`: общий контекст,

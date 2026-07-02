@@ -1,0 +1,32 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: JSON-манифесты валидны
+        run: |
+          python3 -m json.tool .claude-plugin/marketplace.json > /dev/null
+          python3 -m json.tool plugins/qtim/.claude-plugin/plugin.json > /dev/null
+          python3 -m json.tool plugins/qtim/hooks/hooks.json > /dev/null
+
+      - name: Канон рантайма — call-синтаксис упразднённых примитивов запрещён
+        run: |
+          if grep -rnE 'TeamCreate\(|TeamDelete\(|team_name\s*:' plugins/; then
+            echo 'Найден call-синтаксис упразднённых примитивов (TeamCreate(/TeamDelete(/team_name:)' >&2
+            exit 1
+          fi
+          echo 'OK: call-синтаксис упразднённых примитивов не встречается'
+
+      - name: Плейсхолдеры шаблонов из белого списка
+        run: python3 .github/scripts/check_placeholders.py
+
+      - name: Относительные ссылки в plugins/ не биты
+        run: python3 .github/scripts/check_links.py

@@ -1,5 +1,4 @@
 {
-  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "qtim-agent-team",
   "description": "Личный маркетплейс: плагин-движок для bootstrap и оркестрации команды специализированных субагентов под любой проект.",
   "owner": {
