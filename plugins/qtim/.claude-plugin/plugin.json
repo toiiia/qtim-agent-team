@@ -1,6 +1,6 @@
 {
   "name": "qtim",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Bootstrap и оркестрация постоянной команды специализированных субагентов под любой проект — с ролевым входом для разработчиков и PM/аналитиков. Включает генератор setup с автоподбором skills и плагинов/MCP под стек, PM-конвейер feature (хотелка → PRD → декомпозиция → оценка → план), движок team-up/team-lazy/team-down на актуальном рантайме Agent Teams (Agent/SendMessage/Task*), team-sync для миграции собранных команд на новые версии плагина, team-retro/onboard/doctor (уроки эпиков, глубокое наполнение памяти, диагностика), комплект готовых Workflow-скриптов (ensemble-review, access-audit, flaky-hunt), intake-протокол, каталог паттернов оркестрации, протокол Codex second-opinion и hooks-гейты качества.",
   "author": {
     "name": "Антон Фокин"

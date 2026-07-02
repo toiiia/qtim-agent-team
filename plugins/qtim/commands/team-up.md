@@ -148,6 +148,8 @@ Agent({
 ```
 
 > Роли с особыми `subagent_type` (`explorer` → `Explore`; `devops`/`product`/`auditor` → `general-purpose` если генератор не создал им выделенный тип) — как прописано в charter.
+>
+> Строку про Codex second-opinion включай в промпт только при активной секции «Codex second-opinion» charter (есть gate-точки и путь к протоколу). Секции нет или она помечена «выключен (Q5=No)» → строку опусти целиком — consult в проекте не настроен.
 
 ## 5. Подтверди готовность
 

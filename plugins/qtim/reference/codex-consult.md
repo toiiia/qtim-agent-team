@@ -142,7 +142,7 @@ codex exec -s read-only -C "$(git rev-parse --show-toplevel)" -o /tmp/codex-audi
 
 ```bash
 codex exec -s read-only -C "$(git rev-parse --show-toplevel)" -o /tmp/codex-ux.md \
-  "Ты independent product/UX-критик. Фича: <описание>. Прочитай UI-спеку + memory/features.
+  "Ты independent product/UX-критик. Фича: <описание>. Прочитай UI-спеку + memory/decisions (реестр решений и фич).
    Оцени discoverability (как юзер находит фичу), empty states, UI copy (целевая локаль), navigation hints.
    Что пользователь не найдёт или не поймёт? Верни находки с приоритетом P0..P3."
 ```

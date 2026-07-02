@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "test -f .claude/team-charter.md && echo 'Субагент завершился. Team-lead: проверь реальные артефакты (изменённые файлы, отчёт, обновления memory/), не полагайся только на устный ack. Нет артефактов — переспроси через SendMessage или проверь сам.' || true",
+            "command": "test -f \"${CLAUDE_PROJECT_DIR:-.}/.claude/team-charter.md\" && echo 'Субагент завершился. Team-lead: проверь реальные артефакты (изменённые файлы, отчёт, обновления memory/), не полагайся только на устный ack. Нет артефактов — переспроси через SendMessage или проверь сам.' || true",
             "timeout": 5
           }
         ]

@@ -18,13 +18,16 @@ jobs:
           python3 -m json.tool plugins/qtim/hooks/hooks.json > /dev/null
           python3 -m json.tool examples/nuxt-supabase/.claude/settings.local.json > /dev/null
 
-      - name: Канон рантайма — call-синтаксис упразднённых примитивов запрещён
+      - name: Канон рантайма — call-синтаксис упразднённых примитивов запрещён (plugins/ + examples/)
         run: |
-          if grep -rnE 'TeamCreate\(|TeamDelete\(|team_name\s*:' plugins/; then
+          if grep -rnE 'TeamCreate\(|TeamDelete\(|team_name\s*:' plugins/ examples/; then
             echo 'Найден call-синтаксис упразднённых примитивов (TeamCreate(/TeamDelete(/team_name:)' >&2
             exit 1
           fi
           echo 'OK: call-синтаксис упразднённых примитивов не встречается'
+
+      - name: Hook-скрипт синтаксически валиден (sh на Linux = dash)
+        run: sh -n plugins/qtim/hooks/session-start.sh
 
       - name: Плейсхолдеры шаблонов из белого списка
         run: python3 .github/scripts/check_placeholders.py

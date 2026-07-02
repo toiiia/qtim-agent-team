@@ -5,6 +5,9 @@
 
 PLUGIN_ROOT="${1:-$CLAUDE_PLUGIN_ROOT}"
 
+# cwd hook-процесса не обязан совпадать с корнем проекта — якоримся на $CLAUDE_PROJECT_DIR.
+cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || exit 0
+
 [ -f .claude/team-charter.md ] || exit 0
 
 PLUGIN_V=$(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$PLUGIN_ROOT/.claude-plugin/plugin.json" 2>/dev/null | head -n 1)

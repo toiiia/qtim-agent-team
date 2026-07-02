@@ -28,6 +28,7 @@ const RUN = {
 
 let trace = null
 let i = 0
+let errors = 0
 while (!trace && i < MAX_RUNS && budget.remaining() > MIN_BUDGET) {
   i += 1
   const r = await agent(
@@ -36,9 +37,16 @@ while (!trace && i < MAX_RUNS && budget.remaining() > MIN_BUDGET) {
      в каталог скриншотов/логов проекта (memory/screenshots/ или принятый в проекте) и верни
      failed=true + tracePath. Зелёный прогон — failed=false. Код не правь.`,
     { label: `run #${i}`, phase: 'Прогоны', agentType: TESTER, schema: RUN })
-  if (r && r.failed) trace = r.tracePath || '(fail пойман, tracePath не указан — см. notes)'
-  log(`#${i}: ${r && r.failed ? 'ПОЙМАН → ' + trace : 'зелёный'}${r && r.notes ? ' · ' + r.notes : ''}`)
+  if (r === null) {
+    errors += 1
+    log(`#${i}: сбой прогона (агент не вернул результат) — НЕ зелёный, сценарий не проверялся`)
+    continue
+  }
+  if (r.failed) trace = r.tracePath || '(fail пойман, tracePath не указан — см. notes)'
+  log(`#${i}: ${r.failed ? 'ПОЙМАН → ' + trace : 'зелёный'}${r.notes ? ' · ' + r.notes : ''}`)
 }
 
-if (!trace) log(`Не пойман за ${i} прогонов (лимит ${MAX_RUNS}, бюджет-guard ${MIN_BUDGET}) — увеличь maxRuns или измени условия среды`)
-return { caught: !!trace, trace, runs: i }
+if (!trace) log(errors === i && i > 0
+  ? `Ни один из ${i} прогонов не состоялся (все — сбои агента): о стабильности сценария вывода нет, проверь среду (браузер/раннер)`
+  : `Не пойман за ${i - errors} зелёных прогонов${errors ? ` (+${errors} сбоев)` : ''} (лимит ${MAX_RUNS}, бюджет-guard ${MIN_BUDGET}) — увеличь maxRuns или измени условия среды`)
+return { caught: !!trace, trace, runs: i, errors }

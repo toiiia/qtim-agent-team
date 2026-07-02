@@ -2,6 +2,9 @@
 // Запуск (только по opt-in пользователя!): Workflow({ scriptPath: '<каталог плагина qtim>/workflows/ensemble-review.mjs',
 //   args: { scope?: 'что ревьюим', lenses?: [...], reviewerType?: 'reviewer-agent' } })
 // Workflow-агенты эфемерны: итоговый report оркестратор коммитит в memory/review-report сам.
+// Гейт fail-closed: сбой скептика/линзы не превращается в «дефекта нет», а правило
+// «approved=false при любом P0/P1» продублировано детерминированно — LLM-синтез может
+// только ужесточить вердикт, но не ослабить.
 
 export const meta = {
   name: 'ensemble-review',
@@ -54,26 +57,47 @@ const perLens = await pipeline(
      код не правь. Только реальные дефекты с file:line — не стилистика и не пожелания.`,
     { label: `линза: ${lens.slice(0, 40)}`, phase: 'Линзы', agentType: REVIEWER, schema: FINDINGS }),
   (r, lens) => {
-    const fs = ((r && r.findings) || []).slice()
+    if (!r) {
+      log(`Линза «${lens.slice(0, 40)}» упала — измерение НЕ проверено, вердикт будет NOT APPROVED`)
+      return { lens, lensFailed: true, verified: [], unverified: [] }
+    }
+    const fs = (r.findings || []).slice()
       .sort((a, b) => (SEVERITY_ORDER[a.severity] ?? 9) - (SEVERITY_ORDER[b.severity] ?? 9))
-    if (fs.length > MAX_VERIFY_PER_LENS) log(`Линза «${lens.slice(0, 40)}»: ${fs.length} findings, верифицируем топ-${MAX_VERIFY_PER_LENS} по severity`)
+    const overflow = fs.slice(MAX_VERIFY_PER_LENS)
+      .map(f => ({ ...f, real: true, unverified: true, verifyReason: 'сверх лимита верификации — скептиком не проверялся' }))
+    if (overflow.length) log(`Линза «${lens.slice(0, 40)}»: ${fs.length} findings, скептик проверит топ-${MAX_VERIFY_PER_LENS} по severity, остальные ${overflow.length} уйдут в отчёт неверифицированными`)
     return parallel(fs.slice(0, MAX_VERIFY_PER_LENS).map(f => () =>
       agent(
         `Попробуй ОПРОВЕРГНУТЬ finding: «${f.summary}» (${f.file}:${f.line ?? '?'}).
          Открой код и проверь фактически. Не смог подтвердить по коду → real=false.`,
         { label: `verify: ${f.file}`, phase: 'Верификация', schema: VERDICT })
-        .then(v => ({ ...f, real: !!(v && v.real), verifyReason: v && v.reason }))))
+        .then(v => v
+          ? { ...f, real: !!v.real, verifyReason: v.reason }
+          : { ...f, real: true, unverified: true, verifyReason: 'скептик недоступен — finding НЕ опровергнут, требует ручной проверки' })))
+      .then(vs => ({ lens, lensFailed: false, verified: vs.filter(Boolean), unverified: overflow }))
   },
 )
 
-const confirmed = perLens.filter(Boolean).flat().filter(Boolean).filter(f => f.real)
-log(`Подтверждено скептиками: ${confirmed.length} findings`)
+const lensResults = perLens.filter(Boolean)
+const failedLenses = lensResults.filter(l => l.lensFailed).map(l => l.lens)
+const checked = lensResults.flatMap(l => l.verified).filter(f => f.real)
+const confirmed = checked.filter(f => !f.unverified)
+const unverified = checked.filter(f => f.unverified).concat(lensResults.flatMap(l => l.unverified))
+log(`Линз отработало: ${lensResults.length - failedLenses.length}/${LENSES.length}; подтверждено скептиками: ${confirmed.length}; не проверено (сбой/лимит): ${unverified.length}`)
 
 const verdict = await agent(
-  `Сведи подтверждённые findings в один review-отчёт: дедуп (одна проблема, найденная разными
-   линзами, = одна запись), группировка по severity, маршрутизация (db / front / devops / архитектура),
-   итог approved=false при любом P0/P1. Findings:\n${JSON.stringify(confirmed)}`,
+  `Сведи findings в один review-отчёт: дедуп (одна проблема, найденная разными линзами, = одна
+   запись), группировка по severity, маршрутизация (db / front / tester / devops / архитектура),
+   итог approved=false при любом P0/P1. Подтверждённые скептиками findings:\n${JSON.stringify(confirmed)}
+   Неверифицированные findings (сбой скептика или сверх лимита — НЕ опровергнуты, выдели их в отчёте отдельным блоком «требуют ручной проверки»):\n${JSON.stringify(unverified)}${failedLenses.length ? `\n   Линзы, упавшие целиком (эти измерения не проверялись — отчёт неполон, отрази это): ${JSON.stringify(failedLenses)}` : ''}`,
   { phase: 'Синтез', schema: REPORT })
 
-log(`Вердикт: ${verdict && verdict.approved ? 'APPROVED' : 'NOT APPROVED'}`)
-return { approved: !!(verdict && verdict.approved), report: verdict && verdict.report, confirmed }
+// Детерминированный гейт: сбой инфраструктуры и неопровергнутый P0/P1 блокируют независимо от мнения синтезатора.
+const blocking = f => f.severity === 'P0' || f.severity === 'P1'
+const approved = !!(verdict && verdict.approved)
+  && !confirmed.some(blocking)
+  && !unverified.some(blocking)
+  && failedLenses.length === 0
+
+log(`Вердикт: ${approved ? 'APPROVED' : 'NOT APPROVED'}${failedLenses.length ? ` (упавших линз: ${failedLenses.length})` : ''}${unverified.some(blocking) ? ' (неверифицированный P0/P1 блокирует)' : ''}`)
+return { approved, report: verdict && verdict.report, confirmed, unverified, failedLenses }

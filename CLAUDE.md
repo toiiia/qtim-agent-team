@@ -60,10 +60,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Проверка изменений
 
-CI (`.github/workflows/validate.yml`) на каждый push/PR: валидность JSON, запрет call-синтаксиса упразднённых примитивов (`TeamCreate(` / `TeamDelete(` / `team_name:`), плейсхолдеры шаблонов по белому списку и их отсутствие в `examples/` (`.github/scripts/check_placeholders.py`), целостность относительных ссылок (`.github/scripts/check_links.py`), синтаксис Workflow-скриптов (`.github/scripts/check_workflows.mjs` — AsyncFunction-парсинг, как в движке Workflow: top-level return/await легальны, обычный `node --check` тут даёт ложный fail). Локально — те же скрипты плюс руками:
+CI (`.github/workflows/validate.yml`) на каждый push/PR: валидность JSON, запрет call-синтаксиса упразднённых примитивов (`TeamCreate(` / `TeamDelete(` / `team_name:`) в `plugins/` **и** `examples/`, синтаксис hook-скрипта (`sh -n session-start.sh`), плейсхолдеры шаблонов по белому списку + детектор несбалансированных скобок, их отсутствие в `examples/` включая `*.json` (`.github/scripts/check_placeholders.py`), целостность относительных ссылок (`.github/scripts/check_links.py`), Workflow-скрипты (`.github/scripts/check_workflows.mjs` — AsyncFunction-парсинг, как в движке Workflow: top-level return/await легальны, обычный `node --check` тут даёт ложный fail; плюс лексический запрет `Date.now()`/`Math.random()`/безаргументного `new Date()` — ломают resume). Локально — те же скрипты плюс руками:
 
 - Валидность JSON: `python3 -m json.tool .claude-plugin/marketplace.json plugins/qtim/.claude-plugin/plugin.json plugins/qtim/hooks/hooks.json`.
-- Канон рантайма: `grep -rn "TeamCreate\|TeamDelete\|team_name" plugins/` — вхождения только в контексте «упразднено».
+- Канон рантайма: `grep -rn "TeamCreate\|TeamDelete\|team_name" plugins/ examples/` — вхождения только в контексте «упразднено».
 - Кросс-ссылки между `commands/` и `reference/` не битые.
 - Ручная проверка установки: `/plugin marketplace add toiiia/qtim-agent-team` → `/plugin install qtim@qtim-agent-team`; рантайму нужен флаг `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` в `settings.json`.
 

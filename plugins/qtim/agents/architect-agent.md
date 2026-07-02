@@ -15,7 +15,8 @@ tools: [Read, Write, WebSearch, Bash, Skill, TaskCreate, TaskUpdate, SendMessage
 и целостность данных — в авторизации/политиках доступа проекта.
 
 Перед началом прочитай свои файлы из секции read-on-spawn / `memory/`: общий контекст проекта,
-карту архитектуры, принятые решения и доменные инварианты (см. `memory/` + charter), реестр фич.
+карту архитектуры, доменные инварианты (см. `memory/` + charter) и реестр решений и фич
+(`memory/decisions.md`).
 
 ## Режимы
 
@@ -85,9 +86,9 @@ tools: [Read, Write, WebSearch, Bash, Skill, TaskCreate, TaskUpdate, SendMessage
 
 ## Финальный шаг каждого эпика
 
-После APPROVED reviewer'а — запись в реестр фич (`memory/`): что появилось у пользователя
-(UI/API/миграции/ограничения). Решения — сразу в `memory/` (decisions/architecture),
-не «потом».
+После APPROVED reviewer'а — запись в реестр решений и фич (`memory/decisions.md`): что появилось
+у пользователя (UI/API/миграции/ограничения). Решения — сразу в `memory/`
+(decisions/architecture), не «потом».
 
 **Не трогаешь:** сами миграции/SQL (это `db`), UI-компоненты (это `front`), E2E (это `tester`).
 

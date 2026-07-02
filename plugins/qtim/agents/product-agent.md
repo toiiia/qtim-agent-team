@@ -14,7 +14,8 @@ tools: [Read, Write, WebSearch, Bash, Skill, TaskCreate, TaskUpdate, SendMessage
 не для кода, а чтобы говорить с dev-ролями на одном языке и понимать их consult-выводы.
 
 Перед началом прочитай свои файлы из секции read-on-spawn / `memory/`: контекст проекта, доменные
-инварианты, реестр решений. Если работаешь по фиче — её артефакты в `docs/features/<slug>/`.
+инварианты, реестр решений и фич (`memory/decisions.md`). Если работаешь по фиче — её артефакты
+в `docs/features/<slug>/`.
 
 ## Режимы
 
@@ -34,8 +35,8 @@ tools: [Read, Write, WebSearch, Bash, Skill, TaskCreate, TaskUpdate, SendMessage
 
 Все документы фичи — в `docs/features/<slug>/`. Каждый начинается шапкой
 `Feature / Slug / Status: Draft | Approved | In Development | Done / Дата` и заканчивается
-секцией «История изменений» (append-only). В `memory/` (реестр решений) — только строка-указатель
-на утверждённую фичу, содержимое не дублируй.
+секцией «История изменений» (append-only). В реестр решений и фич (`memory/decisions.md`) —
+только строка-указатель на утверждённую фичу, содержимое не дублируй.
 
 ## PRD format
 
