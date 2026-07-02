@@ -11,10 +11,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Структура
 
 - `.claude-plugin/marketplace.json` — манифест маркетплейса, регистрирует плагин из `./plugins/qtim`.
-- `plugins/qtim/commands/` — slash-команды `/qtim:*`: `setup` (генератор команды под проект), `team-up` / `team-lazy` / `team-down` (движок), `team-sync` (миграция собранной команды на новую версию плагина).
+- `plugins/qtim/commands/` — slash-команды `/qtim:*`: `setup` (генератор команды под проект), `team-up` / `team-lazy` / `team-down` (движок), `team-sync` (миграция собранной команды на новую версию плагина), `team-retro` (дистилляция уроков эпика в память), `onboard` (глубокое наполнение memory/), `doctor` (диагностика).
 - `plugins/qtim/agents/` — generic-шаблоны ролей (`architect`, `database`, `frontend`, `testing`, `reviewer`) с плейсхолдерами `{{...}}`.
 - `plugins/qtim/reference/` — переносимая механика: `intake-protocol.md`, `orchestration-patterns.md`, `codex-consult.md`, `migrations.md` (реестр миграций для team-sync). Это supporting-docs, НЕ slash-команды.
+- `plugins/qtim/workflows/` — готовые параметризованные Workflow-скрипты (`ensemble-review.mjs`, `access-audit.mjs`, `flaky-hunt.mjs`); запуск по `scriptPath` из каталога плагина, opt-in пользователя обязателен; ESM, без `Date.now()`/`Math.random()` (ломают resume).
 - `plugins/qtim/hooks/` — hooks плагина: `hooks.json` + `session-start.sh` (SessionStart-анонс при наличии charter + детектор дрейфа версий charter↔плагин; SubagentStop-напоминание про артефакты — advisory).
+- `examples/` — golden-референс сгенерированного (`nuxt-supabase/`): при правке шаблонов `agents/` или структуры charter (setup 4.1) обнови эталон и сверь дифф; CI проверяет отсутствие плейсхолдеров в examples.
 
 ## Архитектура: движок vs генерируемое
 
@@ -58,7 +60,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Проверка изменений
 
-CI (`.github/workflows/validate.yml`) на каждый push/PR: валидность JSON, запрет call-синтаксиса упразднённых примитивов (`TeamCreate(` / `TeamDelete(` / `team_name:`), плейсхолдеры шаблонов по белому списку (`.github/scripts/check_placeholders.py`), целостность относительных ссылок (`.github/scripts/check_links.py`). Локально — те же скрипты плюс руками:
+CI (`.github/workflows/validate.yml`) на каждый push/PR: валидность JSON, запрет call-синтаксиса упразднённых примитивов (`TeamCreate(` / `TeamDelete(` / `team_name:`), плейсхолдеры шаблонов по белому списку и их отсутствие в `examples/` (`.github/scripts/check_placeholders.py`), целостность относительных ссылок (`.github/scripts/check_links.py`), синтаксис Workflow-скриптов (`.github/scripts/check_workflows.mjs` — AsyncFunction-парсинг, как в движке Workflow: top-level return/await легальны, обычный `node --check` тут даёт ложный fail). Локально — те же скрипты плюс руками:
 
 - Валидность JSON: `python3 -m json.tool .claude-plugin/marketplace.json plugins/qtim/.claude-plugin/plugin.json plugins/qtim/hooks/hooks.json`.
 - Канон рантайма: `grep -rn "TeamCreate\|TeamDelete\|team_name" plugins/` — вхождения только в контексте «упразднено».

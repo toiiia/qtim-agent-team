@@ -2,6 +2,21 @@
 
 Версии соответствуют `version` в `plugins/qtim/.claude-plugin/plugin.json` (semver). Пометка «team-sync» у версии говорит, нужно ли в собранных проектах запускать `/qtim:team-sync` (реестр миграций — `plugins/qtim/reference/migrations.md`).
 
+## 1.4.0 — 2026-07-02
+
+> team-sync: не требуется (функциональных миграций нет); по желанию — косметическая запись `→ 1.4.0` в migrations.md (удаление header-note из ранее сгенерированных агентов; standalone — докопировать workflows/). Plugin-linked проекты получают движок автоматически.
+
+### Добавлено
+
+- **`/qtim:team-retro`** — ретроспектива эпика: анализ петель/блокеров/повторяющихся классов проблем по фактам сессии и дистилляция уроков «триггер → действие» в `memory/retro-log.md` и в agent-memory конкретных ролей. Команда теперь умнеет от эпика к эпику, а не только в пределах сессии.
+- **Epic-state / handoff между сессиями:** `team-down` при незавершённом эпике пишет `memory/epic-state.md` (фаза, сделано, «в полёте», следующий шаг), `team-up` в новой сессии читает его и предлагает продолжить, восстановив задачи с owner'ами. Liveness по-прежнему сессионный, но эпик больше не теряется.
+- **Комплект готовых Workflow-скриптов** в `plugins/qtim/workflows/` (запуск по `scriptPath`, opt-in обязателен): `ensemble-review.mjs` (линзы → скептик-верификация → вердикт), `access-audit.mjs` (fan-out по сущностям → карта видимости + щели), `flaky-hunt.mjs` (loop-until-trace с бюджет-guard'ом). Named workflows из orchestration-patterns теперь поставляются, а не только описываются; в standalone копируются в `.claude/workflows/`.
+- **`/qtim:onboard`** — глубокое наполнение памяти существующего проекта: план → подтверждение объёма → fan-out исследователей по подсистемам (read-only) → синтез карты/инвариантов/конвенций в `memory/` с прецедентами file:line.
+- **`/qtim:doctor`** — read-only диагностика с фиксами: флаг Agent Teams, версия/штамп charter, целостность агентов (frontmatter, tools, неподставленные плейсхолдеры), settings, память, codex, reference-пути.
+- **`examples/nuxt-supabase/`** — golden-референс сгенерированного (charter, роль db, settings, baseline-память) как живая документация и эталон для сверки при правках шаблонов; CI проверяет отсутствие плейсхолдеров в examples.
+- CI: синтакс-проверка Workflow-скриптов (`check_workflows.mjs` — AsyncFunction-парсинг, как исполняет движок; обычный `node --check` даёт ложный fail на легальном top-level return); обратная проверка examples в `check_placeholders.py`.
+- Setup: header-note шаблона не переносится в сгенерированные агенты; Phase 5 рекомендует onboard/doctor; Standalone копирует новые команды и workflows.
+
 ## 1.3.0 — 2026-07-02
 
 > team-sync: рекомендуется — добавит в charter версионный штамп; без него функциональных поломок нет, но SessionStart-hook будет предлагать sync при каждом старте.

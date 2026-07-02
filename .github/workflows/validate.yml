@@ -16,6 +16,7 @@ jobs:
           python3 -m json.tool .claude-plugin/marketplace.json > /dev/null
           python3 -m json.tool plugins/qtim/.claude-plugin/plugin.json > /dev/null
           python3 -m json.tool plugins/qtim/hooks/hooks.json > /dev/null
+          python3 -m json.tool examples/nuxt-supabase/.claude/settings.local.json > /dev/null
 
       - name: Канон рантайма — call-синтаксис упразднённых примитивов запрещён
         run: |
@@ -27,6 +28,9 @@ jobs:
 
       - name: Плейсхолдеры шаблонов из белого списка
         run: python3 .github/scripts/check_placeholders.py
+
+      - name: Workflow-скрипты синтаксически валидны
+        run: node .github/scripts/check_workflows.mjs plugins/qtim/workflows/*.mjs
 
       - name: Относительные ссылки в plugins/ не биты
         run: python3 .github/scripts/check_links.py
