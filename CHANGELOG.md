@@ -2,6 +2,20 @@
 
 Версии соответствуют `version` в `plugins/qtim/.claude-plugin/plugin.json` (semver). Пометка «team-sync» у версии говорит, нужно ли в собранных проектах запускать `/qtim:team-sync` (реестр миграций — `plugins/qtim/reference/migrations.md`).
 
+## 1.5.0 — 2026-07-02
+
+> team-sync: опционально — dev-only команды работают без изменений (движок backward-tolerant); запускай, если хочешь добавить PM-дорожку в собранный проект или заменить старый каркас роли `product` на полноценный шаблон. Перечень — `reference/migrations.md`, запись «→ 1.5.0».
+
+### Добавлено
+
+- **Ролевой вход**: `/qtim:setup` первым вопросом (Q0) спрашивает роль пользователя — Developer / PM-Analyst / Оба — и генерирует команду под неё; PM-состав фиксируется стеком (`product` + `architect` + профильные impl/`tester`, без `reviewer`) — dev-роли нужны конвейеру как read-only консультанты. При существующем charter с другой дорожкой setup дописывает недостающее, не пересоздавая.
+- **`/qtim:feature`** — PM-конвейер: intake → PRD → декомпозиция → оценка → план → handoff в `/qtim:team-up`/`/qtim:team-lazy`; checkpoint у пользователя после каждой стадии; resume по статусам артефактов при существующем slug.
+- **Шаблон `agents/product-agent.md`** — роль `product` выросла из Extended-каркаса в полноценный шаблон: режимы INTAKE / PRD / DECOMPOSE / ESTIMATE / PLAN + прежний UX-аудит (режим UX-AUDIT); production code не пишет; `memory: "project"` (200 строк).
+- **`reference/feature-pipeline.md`** — механика конвейера: артефакты `docs/features/<slug>/` (intake/prd/decomposition/estimate/plan) со статусной машиной Draft → Approved → In Development → Done, правило dev-consult на декомпозиции/оценке, grounded-оценки S/M/L/XL + confidence только с evidence (без выдуманных часов), handoff-контракт. Setup переносит суть в charter-секцию «PM-конвейер» + абсолютный путь к протоколу (паттерн codex-consult).
+- **Интеграция с dev-флоу**: team-up/team-lazy читают `docs/features/<slug>/plan.md` и `prd.md` как источник scope и acceptance criteria и обновляют Status артефактов; SessionStart-анонс упоминает `/qtim:feature`.
+
+Интеграция [PR #1](https://github.com/toiiia/qtim-agent-team/pull/1) (@trushhh777): фича обкатана в Codex-адаптации плагина и портирована под конвенции Claude Code-версии; при слиянии адаптирована к 1.4.0 (team-retro/onboard/doctor/workflows в Standalone-копировании и Phase 5, golden-пример помечен как dev-дорожка).
+
 ## 1.4.0 — 2026-07-02
 
 > team-sync: не требуется (функциональных миграций нет); по желанию — косметическая запись `→ 1.4.0` в migrations.md (удаление header-note из ранее сгенерированных агентов; standalone — докопировать workflows/). Plugin-linked проекты получают движок автоматически.

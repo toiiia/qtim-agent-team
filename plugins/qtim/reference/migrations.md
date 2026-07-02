@@ -42,3 +42,20 @@
   эту цитату можно удалить — на работу ролей она не влияет.
 - **Standalone** — при пере-копировании движка добавь каталог `.claude/workflows/`
   (готовые Workflow-скрипты появились в 1.4.0).
+
+## → 1.5.0
+
+- **Роль `product`** — если сгенерирована по старому каркасу (Extended-состав до 1.5.0),
+  предложи заменить на шаблон `product-agent.md` (PM-конвейер INTAKE/PRD/DECOMPOSE/ESTIMATE/PLAN +
+  прежний UX-аудит как режим UX-AUDIT; frontmatter `memory: "project"` — создай
+  `.claude/agent-memory/product-agent/MEMORY.md`, если отсутствует). Ручные правки старого
+  каркаса не затирай молча — покажи diff.
+- **Charter, секция «PM-конвейер»** — опциональна: добавляй только если пользователь хочет
+  PM-дорожку (`/qtim:feature`); спроси. Содержимое — суть `reference/feature-pipeline.md`
+  (стадии с checkpoint, схема `docs/features/<slug>/` со статусами, правило dev-consult и
+  grounded-оценок, handoff-контракт) + абсолютный путь к файлу протокола (как у codex-consult;
+  standalone — локальная копия `.claude/reference/feature-pipeline.md`). Dev-only команды без
+  PM-дорожки менять не нужно — движок backward-tolerant: `/qtim:feature` без секции отправляет
+  в `/qtim:setup`.
+- **Standalone** — докопировать `commands/feature.md` и `reference/feature-pipeline.md`
+  в `.claude/`.

@@ -11,9 +11,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Структура
 
 - `.claude-plugin/marketplace.json` — манифест маркетплейса, регистрирует плагин из `./plugins/qtim`.
-- `plugins/qtim/commands/` — slash-команды `/qtim:*`: `setup` (генератор команды под проект), `team-up` / `team-lazy` / `team-down` (движок), `team-sync` (миграция собранной команды на новую версию плагина), `team-retro` (дистилляция уроков эпика в память), `onboard` (глубокое наполнение memory/), `doctor` (диагностика).
-- `plugins/qtim/agents/` — generic-шаблоны ролей (`architect`, `database`, `frontend`, `testing`, `reviewer`) с плейсхолдерами `{{...}}`.
-- `plugins/qtim/reference/` — переносимая механика: `intake-protocol.md`, `orchestration-patterns.md`, `codex-consult.md`, `migrations.md` (реестр миграций для team-sync). Это supporting-docs, НЕ slash-команды.
+- `plugins/qtim/commands/` — slash-команды `/qtim:*`: `setup` (генератор команды под проект, первый вопрос — роль пользователя), `feature` (PM-конвейер «хотелка → план»), `team-up` / `team-lazy` / `team-down` (движок), `team-sync` (миграция собранной команды на новую версию плагина), `team-retro` (дистилляция уроков эпика в память), `onboard` (глубокое наполнение memory/), `doctor` (диагностика).
+- `plugins/qtim/agents/` — generic-шаблоны ролей (`architect`, `database`, `frontend`, `testing`, `reviewer`, `product`) с плейсхолдерами `{{...}}`.
+- `plugins/qtim/reference/` — переносимая механика: `intake-protocol.md`, `orchestration-patterns.md`, `codex-consult.md`, `feature-pipeline.md` (механика PM-конвейера), `migrations.md` (реестр миграций для team-sync). Это supporting-docs, НЕ slash-команды.
 - `plugins/qtim/workflows/` — готовые параметризованные Workflow-скрипты (`ensemble-review.mjs`, `access-audit.mjs`, `flaky-hunt.mjs`); запуск по `scriptPath` из каталога плагина, opt-in пользователя обязателен; ESM, без `Date.now()`/`Math.random()` (ломают resume).
 - `plugins/qtim/hooks/` — hooks плагина: `hooks.json` + `session-start.sh` (SessionStart-анонс при наличии charter + детектор дрейфа версий charter↔плагин; SubagentStop-напоминание про артефакты — advisory).
 - `examples/` — golden-референс сгенерированного (`nuxt-supabase/`): при правке шаблонов `agents/` или структуры charter (setup 4.1) обнови эталон и сверь дифф; CI проверяет отсутствие плейсхолдеров в examples.
@@ -50,11 +50,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **Штамп** `generated-by: qtim v<версия> · mode: <plugin-linked|standalone>` в шапке charter: пишет setup (4.1), читает `hooks/session-start.sh` (детектор дрейфа) и `/qtim:team-sync` (диапазон миграций). Формат строки менять только синхронно во всех трёх точках.
 - **Backward-tolerant движок:** новое ожидание движка от charter — всегда с fallback на дефолт; старый charter не должен ломать новый team-up/team-lazy.
-- **Правка, меняющая сгенерированное** (шаблоны `agents/`, структура charter в setup 4.1, settings/hooks-baseline), обязана: добавить запись `## → <версия>` в `reference/migrations.md`, строку «team-sync: требуется/рекомендуется» в CHANGELOG и минорный бамп версии. Правки только движка (`commands/team-*`, `reference/*` кроме migrations) миграции не требуют — Plugin-linked проекты получают их автоматически.
+- **Правка, меняющая сгенерированное** (шаблоны `agents/`, структура charter в setup 4.1, settings/hooks-baseline), обязана: добавить запись `## → <версия>` в `reference/migrations.md`, строку «team-sync: требуется/рекомендуется» в CHANGELOG и минорный бамп версии. Правки только движка (`commands/*` кроме структуры charter в setup 4.1, `reference/*` кроме migrations) миграции не требуют — Plugin-linked проекты получают их автоматически.
 
 ## Прочие инварианты контента
 
-- `commands/team-*.md` и `reference/*` читает **только team-lead**: orchestration-логика не должна попадать в промпты субагентов (риск рекурсии). Шаблоны `agents/` — наоборот, промпты субагентов: движковой логики там быть не должно.
+- `commands/*.md` и `reference/*` читает **только team-lead**: orchestration-логика не должна попадать в промпты субагентов (риск рекурсии). Шаблоны `agents/` — наоборот, промпты субагентов: движковой логики там быть не должно.
 - Codex-протокол (`reference/codex-consult.md`): advisory (доменный инвариант проекта > совет codex), consult всегда read-only (`-s read-only`), fail-soft (недоступность codex не блокирует эпик), execution lane — отдельная полоса ровно с двумя триггерами. Для money/security-кода — нейтральные defect-review формулировки, сырой вывод codex в тред не ретранслируется.
 - Декоративные emoji не добавлять; статус-маркеры (❌ anti-pattern, галки чеклистов) допустимы.
 

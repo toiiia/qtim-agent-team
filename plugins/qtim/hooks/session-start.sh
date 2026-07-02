@@ -11,9 +11,9 @@ PLUGIN_V=$(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$P
 CHARTER_V=$(grep -m 1 -o 'generated-by: qtim v[0-9][0-9A-Za-z.-]*' .claude/team-charter.md 2>/dev/null | sed 's/.*qtim v//; s/[.-]*$//')
 
 if [ -z "$PLUGIN_V" ] || [ "$CHARTER_V" = "$PLUGIN_V" ]; then
-  echo "[qtim] Команда агентов настроена (charter найден). /qtim:team-up — полная, /qtim:team-lazy — по требованию, /qtim:team-down — свернуть."
+  echo "[qtim] Команда агентов настроена (charter найден). /qtim:feature — хотелка до плана (если настроена PM-дорожка), /qtim:team-up — полная, /qtim:team-lazy — по требованию, /qtim:team-down — свернуть."
 else
-  echo "[qtim] Команда настроена, но собрана по версии плагина ${CHARTER_V:-«до 1.3.0, штампа нет»}, а установлена v$PLUGIN_V — сгенерированные файлы (charter/агенты/settings) могли разойтись с движком. Запусти /qtim:team-sync: миграция подтянет изменения, не трогая проектную конкретику и memory/. Работать можно и без этого: /qtim:team-up | /qtim:team-lazy | /qtim:team-down."
+  echo "[qtim] Команда настроена, но собрана по версии плагина ${CHARTER_V:-«до 1.3.0, штампа нет»}, а установлена v$PLUGIN_V — сгенерированные файлы (charter/агенты/settings) могли разойтись с движком. Запусти /qtim:team-sync: миграция подтянет изменения, не трогая проектную конкретику и memory/. Работать можно и без этого: /qtim:team-up | /qtim:team-lazy | /qtim:team-down (+ /qtim:feature, если настроена PM-дорожка)."
 fi
 
 exit 0

@@ -1,9 +1,11 @@
 # Examples — golden-референс генератора
 
 `nuxt-supabase/` — эталонный вывод `/qtim:setup` для вымышленного проекта **acme**
-(Nuxt 3 + Supabase, состав Standard, intake «автопилот с асимметрией», Codex Yes,
-форма Plugin-linked). Показан репрезентативный срез: charter целиком, одна сгенерированная
-роль (`db` — самая насыщенная подстановками), settings и baseline-память.
+(роль Developer (Q0), Nuxt 3 + Supabase, состав Standard, intake «автопилот с асимметрией»,
+Codex Yes, форма Plugin-linked). Показан репрезентативный срез: charter целиком, одна
+сгенерированная роль (`db` — самая насыщенная подстановками), settings и baseline-память.
+PM-дорожка (Q0 = PM/Analyst: роль `product`, charter-секция «PM-конвейер», `docs/features/`)
+в эталоне не представлена — он покрывает dev-трек.
 
 Назначение:
 

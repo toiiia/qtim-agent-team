@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "qtim",
-      "description": "Bootstrap и оркестрация команды субагентов: генератор setup + движок team-up/team-lazy/team-down (рантайм Agent Teams), team-sync для миграции собранных команд, team-retro/onboard/doctor, готовые Workflow-скрипты, intake-протокол, каталог паттернов оркестрации, Codex second-opinion, hooks-гейты.",
+      "description": "Bootstrap и оркестрация команды субагентов: генератор setup с ролевым входом (dev / PM-аналитик) + PM-конвейер feature, движок team-up/team-lazy/team-down (рантайм Agent Teams), team-sync для миграции собранных команд, team-retro/onboard/doctor, готовые Workflow-скрипты, intake-протокол, каталог паттернов оркестрации, Codex second-opinion, hooks-гейты.",
       "source": "./plugins/qtim",
       "category": "development",
       "author": {
