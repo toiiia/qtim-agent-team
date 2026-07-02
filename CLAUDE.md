@@ -11,10 +11,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Структура
 
 - `.claude-plugin/marketplace.json` — манифест маркетплейса, регистрирует плагин из `./plugins/qtim`.
-- `plugins/qtim/commands/` — slash-команды `/qtim:*`: `setup` (генератор команды под проект), `team-up` / `team-lazy` / `team-down` (движок).
+- `plugins/qtim/commands/` — slash-команды `/qtim:*`: `setup` (генератор команды под проект), `team-up` / `team-lazy` / `team-down` (движок), `team-sync` (миграция собранной команды на новую версию плагина).
 - `plugins/qtim/agents/` — generic-шаблоны ролей (`architect`, `database`, `frontend`, `testing`, `reviewer`) с плейсхолдерами `{{...}}`.
-- `plugins/qtim/reference/` — переносимая механика: `intake-protocol.md`, `orchestration-patterns.md`, `codex-consult.md`. Это supporting-docs, НЕ slash-команды.
-- `plugins/qtim/hooks/hooks.json` — hooks плагина (SessionStart-анонс при наличии charter, SubagentStop-напоминание про артефакты).
+- `plugins/qtim/reference/` — переносимая механика: `intake-protocol.md`, `orchestration-patterns.md`, `codex-consult.md`, `migrations.md` (реестр миграций для team-sync). Это supporting-docs, НЕ slash-команды.
+- `plugins/qtim/hooks/` — hooks плагина: `hooks.json` + `session-start.sh` (SessionStart-анонс при наличии charter + детектор дрейфа версий charter↔плагин; SubagentStop-напоминание про артефакты — advisory).
 
 ## Архитектура: движок vs генерируемое
 
@@ -41,6 +41,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - «**Какая форма**» — 6 паттернов на движке Workflow (opt-in пользователя обязателен) — `reference/orchestration-patterns.md`.
 
 Не дублируй логику одной оси в файле другой — файлы ссылаются друг на друга относительными ссылками (`../commands/…`, `../reference/…`), они должны оставаться валидными.
+
+## Версионирование и миграции сгенерированного
+
+Сгенерированное в проектах (charter, агенты, settings) не обновляется вместе с плагином — за стык версий отвечают три точки с общим контрактом:
+
+- **Штамп** `generated-by: qtim v<версия> · mode: <plugin-linked|standalone>` в шапке charter: пишет setup (4.1), читает `hooks/session-start.sh` (детектор дрейфа) и `/qtim:team-sync` (диапазон миграций). Формат строки менять только синхронно во всех трёх точках.
+- **Backward-tolerant движок:** новое ожидание движка от charter — всегда с fallback на дефолт; старый charter не должен ломать новый team-up/team-lazy.
+- **Правка, меняющая сгенерированное** (шаблоны `agents/`, структура charter в setup 4.1, settings/hooks-baseline), обязана: добавить запись `## → <версия>` в `reference/migrations.md`, строку «team-sync: требуется/рекомендуется» в CHANGELOG и минорный бамп версии. Правки только движка (`commands/team-*`, `reference/*` кроме migrations) миграции не требуют — Plugin-linked проекты получают их автоматически.
 
 ## Прочие инварианты контента
 

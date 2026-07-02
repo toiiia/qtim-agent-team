@@ -1,7 +1,7 @@
 {
   "name": "qtim",
-  "version": "1.2.0",
-  "description": "Bootstrap и оркестрация постоянной команды специализированных субагентов под любой проект. Включает генератор setup с автоподбором skills и плагинов/MCP под стек, движок team-up/team-lazy/team-down на актуальном рантайме Agent Teams (Agent/SendMessage/Task*), intake-протокол, каталог паттернов оркестрации, протокол Codex second-opinion и hooks-гейты качества.",
+  "version": "1.3.0",
+  "description": "Bootstrap и оркестрация постоянной команды специализированных субагентов под любой проект. Включает генератор setup с автоподбором skills и плагинов/MCP под стек, движок team-up/team-lazy/team-down на актуальном рантайме Agent Teams (Agent/SendMessage/Task*), team-sync для миграции собранных команд на новые версии плагина, intake-протокол, каталог паттернов оркестрации, протокол Codex second-opinion и hooks-гейты качества.",
   "author": {
     "name": "Антон Фокин"
   },

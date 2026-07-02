@@ -1,12 +1,12 @@
 {
-  "description": "Универсальные hooks-гейты команды агентов, активны только в проектах с .claude/team-charter.md: анонс команды при старте сессии (инжектится в контекст) и напоминание проверить артефакты завершившегося субагента (SubagentStop — advisory для человека: stdout этого события в контекст модели не инжектится, виден в transcript).",
+  "description": "Универсальные hooks-гейты команды агентов, активны только в проектах с .claude/team-charter.md: анонс команды при старте сессии с детектором дрейфа версий charter<->плагин (инжектится в контекст; см. session-start.sh) и напоминание проверить артефакты завершившегося субагента (SubagentStop — advisory для человека: stdout этого события в контекст модели не инжектится, виден в transcript).",
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "test -f .claude/team-charter.md && echo '[qtim] Команда агентов настроена (charter найден). /qtim:team-up — полная, /qtim:team-lazy — по требованию, /qtim:team-down — свернуть.' || true",
+            "command": "sh \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\" \"${CLAUDE_PLUGIN_ROOT}\"",
             "timeout": 5
           }
         ]

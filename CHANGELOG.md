@@ -1,8 +1,23 @@
 # Changelog
 
-Версии соответствуют `version` в `plugins/qtim/.claude-plugin/plugin.json` (semver).
+Версии соответствуют `version` в `plugins/qtim/.claude-plugin/plugin.json` (semver). Пометка «team-sync» у версии говорит, нужно ли в собранных проектах запускать `/qtim:team-sync` (реестр миграций — `plugins/qtim/reference/migrations.md`).
+
+## 1.3.0 — 2026-07-02
+
+> team-sync: рекомендуется — добавит в charter версионный штамп; без него функциональных поломок нет, но SessionStart-hook будет предлагать sync при каждом старте.
+
+### Добавлено
+
+- **`/qtim:team-sync`** — миграция собранной команды на текущую версию плагина: подтягивает engine-managed части сгенерированных файлов (tools агентов, канонические блоки шаблонов, структура charter, settings-baseline), не трогая проектную конкретику, `memory/` и `.claude/agent-memory/`. План показывается до записи; конфликты с ручными правками — на решение пользователя.
+- **Версионный штамп** `generated-by: qtim v<версия> · mode: <plugin-linked|standalone>` в шапке charter — пишет setup, обновляет team-sync.
+- **Детектор дрейфа версий** в SessionStart-hook (`hooks/session-start.sh` вместо inline-команды): charter собран по другой версии → анонс подсказывает запустить `/qtim:team-sync`; версии совпадают → обычный анонс.
+- **`reference/migrations.md`** — реестр миграций по версиям (читает team-sync); заполнен записями `→ 1.2.0` и `→ 1.3.0`.
+- Инварианты версионирования в CLAUDE.md: контракт штампа (setup / hook / team-sync), backward-tolerant чтение charter движком, обязательность migration-записи при правках сгенерированного.
+- README: раздел «Обновление» + `/qtim:team-sync` в таблице команд.
 
 ## 1.2.0 — 2026-07-02
+
+> team-sync: требуется — проектам, собранным до 1.2.0 (tools агентов, deny-формат, секции charter, путь codex-consult); перечень — `reference/migrations.md`, запись «→ 1.2.0».
 
 ### Исправлено
 
