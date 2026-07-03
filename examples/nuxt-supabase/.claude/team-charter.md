@@ -1,6 +1,6 @@
 # Team Charter — acme
 
-Версия 1.0 · 2026-07-02 · generated-by: qtim v1.6.0 · mode: plugin-linked
+Версия 1.0 · 2026-07-02 · generated-by: qtim v1.7.0 · mode: plugin-linked
 
 ## Назначение
 
