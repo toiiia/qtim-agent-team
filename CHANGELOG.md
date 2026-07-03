@@ -2,6 +2,14 @@
 
 Версии соответствуют `version` в `plugins/qtim/.claude-plugin/plugin.json` (semver). Пометка «team-sync» у версии говорит, нужно ли в собранных проектах запускать `/qtim:team-sync` (реестр миграций — `plugins/qtim/reference/migrations.md`).
 
+## 1.7.1 — 2026-07-03
+
+> team-sync: не требуется — правка только движка (doctor), plugin-linked проекты получают её автоматически; standalone подтянет при следующем пере-копировании движка.
+
+### Добавлено
+
+- `/qtim:doctor`, пункт «Память»: при PM-дорожке проверяет продуктовую память — созданные `memory/product-*.md`, не вписанные в `read on spawn` роли `product`, → warn; отсутствие файлов → info с рекомендацией `/qtim:product-onboard` (канон «если созданы» — не ошибка). Финдинг ревью PR #3.
+
 ## 1.7.0 — 2026-07-03
 
 > team-sync: рекомендуется командам с PM-дорожкой — обновит шаблон роли `product` и read-on-spawn в charter под продуктовую память; dev-only команды работают без изменений (standalone-форме — только докопировать `product-onboard.md` в движковую копию). Перечень — `reference/migrations.md`, запись «→ 1.7.0».
