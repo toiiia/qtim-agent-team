@@ -1,6 +1,6 @@
 # Team Charter — acme
 
-Версия 1.0 · 2026-07-02 · generated-by: qtim v1.8.0 · mode: plugin-linked
+Версия 1.0 · 2026-07-02 · generated-by: qtim v1.10.0 · mode: plugin-linked
 
 ## Назначение
 
@@ -25,7 +25,7 @@ approval-гейт), реализация автономно, вопросы — 
 
 | Роль | subagent_type | Mission | Triggers | Do-not-touch | Read on spawn | Skills | Mandatory practices |
 |---|---|---|---|---|---|---|---|
-| architect | architect-agent | ADR, границы модулей, дизайн фич | новая фича, рефактор, «куда положить» | миграции, UI, E2E | memory/architecture, memory/decisions | brainstorming, grill-me | brainstorming до ADR; codex на нетривиальном ADR |
+| architect | architect-agent | ADR, границы модулей, дизайн фич | новая фича, рефактор, «куда положить» | миграции, UI, E2E | memory/architecture, memory/decisions | — | qtim:brainstorm до ADR; codex на нетривиальном ADR |
 | db | database-agent | схема, RLS, миграции, индексы | изменение схемы/политик, медленный запрос | UI, CSS, тесты tester'а | memory/schema, последние 5 миграций | supabase-postgres-best-practices, query-optimization | идемпотентные миграции; RLS на каждой таблице; codex на security-critical |
 | front | frontend-agent | страницы, composables, компоненты | UI-задачи после готовности схемы | SQL/миграции, политики | memory/ui-spec, types/database.ts | nuxt, typescript-expert | pnpm typecheck + build гейт; self-check в реальном браузере |
 | tester | testing-agent | real-browser sweep, регрессии | «эпик готов», баг-репорт, pre-merge | прод-код | memory/test-cases, memory/bug-log | e2e-testing | real-browser sweep + скриншоты; console/network чистые |
