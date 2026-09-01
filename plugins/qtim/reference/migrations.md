@@ -372,3 +372,26 @@
   (`qtim:minimal-diff` → `minimal-diff`) в файлах ролей `.claude/agents/*` и charter.
 - Без миграции роли работают по-прежнему: скил доступен в сессии, но ни одна роль его
   не вызывает — ссылок на него в сгенерированных файлах нет.
+
+## → 1.14.0
+
+Дизайн-трек: Q0=Designer, конвейер `/qtim:design`, четыре новых шаблона ролей
+(`designer-agent`, `proto-agent`, `ds-agent`, `reviewer-design-agent`), скил
+`qtim:design-prototype`, reference `design-pipeline.md`, эталон `examples/greenfield-design/`.
+Существующих dev/PM-команд миграция почти не касается — новое приезжает с плагином
+автоматически; подтянуть стоит два места:
+
+- **`templates/hooks/screenshots-gate.sh`** — фильтр self-check-снимков обобщён с префикса
+  `front-selfcheck-` до конвенции: не считается любой файл с `-selfcheck-` в имени
+  (`find ... ! -name '*-selfcheck-*'`) — покрывает дизайн-роли и любые будущие роли без новых
+  правок гейта; обновлён и текст stderr. Проект со скопированным гейтом в `.claude/hooks/` —
+  пере-скопируй скрипт (иначе self-check-снимки дизайн-ролей, если дизайн-дорожку допишут
+  позже, будут ложно закрывать гейт тестера).
+- **Скил `qtim:prototype`** — добавлена секция «Граница с `qtim:design-prototype`»
+  (throwaway vs деливерабл показа). Standalone-проекты — пере-скопируй каталог
+  `skills/prototype/` и добавь `skills/design-prototype/`, `commands/design.md`,
+  `reference/design-pipeline.md` с локализацией имён по правилу 4.6.
+
+Дизайн-дорожка в существующий проект добавляется не миграцией, а повторным `/qtim:setup`
+(Q0=Designer — он дописывает, не пересоздаёт). Charter без секции «Дизайн-конвейер» валиден:
+`/qtim:design` на нём деградирует мягко — подсказкой про повторный setup (backward-tolerance).

@@ -29,10 +29,14 @@ PAYLOAD=$(cat 2>/dev/null)
 AGENT_TYPE=$(printf '%s' "$PAYLOAD" | sed -n 's/.*"agent_type"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1)
 [ "$AGENT_TYPE" = "$TESTER_TYPE" ] || exit 0
 
-# Self-check-снимки front'а гейт не закрывают — та же конвенция, что у reviewer.
+# Self-check-снимки ролей гейт не закрывают — конвенция: имя содержит "-selfcheck-"
+# (front-selfcheck-*, designer-selfcheck-*, proto-selfcheck-*, любые будущие роли).
+# Гейт закрывают только sweep-снимки tester'а; его конвенция <epic>-<phase>-<viewport>-<screen>
+# подстроку "selfcheck" не содержит.
 FRESH=$(find "$SHOTS_DIR" -type f \
   \( -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' -o -name '*.webp' \) \
-  -mmin "-$WINDOW_MIN" 2>/dev/null | grep -v '/front-selfcheck-' | head -n 1)
+  ! -name '*-selfcheck-*' \
+  -mmin "-$WINDOW_MIN" 2>/dev/null | head -n 1)
 [ -n "$FRESH" ] && exit 0
 
 SESSION=$(printf '%s' "$PAYLOAD" | sed -n 's/.*"session_id"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1)
@@ -44,7 +48,7 @@ echo $((BLOCKS + 1)) > "$COUNTER" 2>/dev/null
 
 cat >&2 <<EOF
 Гейт скриншотов не пройден: в $SHOTS_DIR нет снимков за последние $WINDOW_MIN мин
-(self-check-снимки front'а с префиксом front-selfcheck- не считаются).
+(self-check-снимки ролей — имена с "-selfcheck-" — не считаются).
 
 Доделай текущую задачу так: прогони затронутые экраны в реальном браузере, сохрани снимки
 по конвенции <epic>-<phase>-<viewport>-<screen> в $SHOTS_DIR, открой каждый через Read

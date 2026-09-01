@@ -22,6 +22,8 @@ ALLOWED = {
     "TYPECHECK_CMD",
     "TEST_RUNNER",
     "E2E_TOOL",
+    "TOKENS_PATH",
+    "SHOWCASE_CMD",
 }
 
 STRICT = re.compile(r"^\{\{([A-Z0-9_]+)\}\}$")
