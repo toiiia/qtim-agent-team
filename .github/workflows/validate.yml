@@ -20,6 +20,8 @@ jobs:
           python3 -m json.tool plugins/qtim/hooks/hooks.json > /dev/null
           python3 -m json.tool examples/nuxt-supabase/.claude/settings.json > /dev/null
           python3 -m json.tool examples/nuxt-supabase/.claude/settings.local.json > /dev/null
+          python3 -m json.tool examples/greenfield-design/.claude/settings.json > /dev/null
+          python3 -m json.tool examples/greenfield-design/.claude/settings.local.json > /dev/null
 
       - name: Канон рантайма — call-синтаксис упразднённых примитивов запрещён (plugins/ + examples/)
         run: |

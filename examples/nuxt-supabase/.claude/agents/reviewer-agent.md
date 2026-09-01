@@ -91,8 +91,8 @@ pnpm test        # если в эпике есть unit/integration-слой
 
 В `tests/screenshots/` существуют **реальные скриншоты от tester'а за текущий эпик**
 по его конвенции имён (`<epic>-<phase>-<viewport>-<screen>`): каждый затронутый UI-экран ×
-релевантные viewport (mobile/desktop минимум). Self-check-скриншоты `front` (префикс
-`front-selfcheck-`) гейт НЕ закрывают. Нет tester-скриншотов или только assertion-прогон без
+релевантные viewport (mobile/desktop минимум). Self-check-скриншоты ролей (конвенция
+`<роль>-selfcheck-*`, у `front` — `front-selfcheck-`) гейт НЕ закрывают. Нет tester-скриншотов или только assertion-прогон без
 visual check → **NOT APPROVED + route back to tester**.
 
 ## Шаг 3: codex second-opinion (риск-зависимый, перед вердиктом APPROVED)

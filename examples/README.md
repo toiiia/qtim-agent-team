@@ -7,7 +7,18 @@ Codex Yes, форма Plugin-linked). Показан полный dev-соста
 `Explore`, файла не требует), settings, baseline-память, `CLAUDE.md` со строкой импорта charter
 и правила по путям в `.claude/rules/`.
 PM-дорожка (Q0 = PM/Analyst: роль `product`, charter-секция «PM-конвейер», `docs/features/`)
-в эталоне не представлена — он покрывает dev-трек.
+в эталонах не представлена.
+
+`greenfield-design/` — эталонный вывод `/qtim:setup` для вымышленного дизайн-проекта **glow**
+(роль Designer (Q0), пустая папка, intake «автопилот с асимметрией», Codex Yes, форма
+Plugin-linked). Показан дизайн-состав: charter с секцией «Дизайн-конвейер», четыре роли с
+собственными файлами (`designer`, `proto`, `ds`, `reviewer` из шаблона `reviewer-design-agent`;
+`tester` — адаптация `testing-agent` под артефакты показа; `explorer` — встроенный `Explore`),
+settings, baseline-память. DS-target в эталоне намеренно не решён (гейт стадии 4): у `ds` и
+`proto` сохранены обе ветки с пометкой «активируется гейтом DS-target» — это демонстрация
+генерации greenfield до выбора цели. Правил `.claude/rules/` нет намеренно: в пустой папке
+глобы `paths` указывали бы на несуществующие каталоги.
+
 
 Назначение:
 
